@@ -1,0 +1,208 @@
+[gd_scene load_steps=29 format=3 uid="uid://c0ttefhg74235"]
+
+[ext_resource type="Shader" uid="uid://bulqso12hlwoy" path="res://shaders/stylized_sky.gdshader" id="1_4wyf3"]
+[ext_resource type="Script" uid="uid://lwp8n33ajedh" path="res://scripts/movement.gd" id="2_k0juu"]
+[ext_resource type="Script" uid="uid://vhbc0qwli5en" path="res://scripts/camera.gd" id="3_71j4m"]
+[ext_resource type="Script" uid="uid://b15bcxnld5as6" path="res://scripts/button.gd" id="4_k0juu"]
+
+[sub_resource type="Gradient" id="Gradient_qfnet"]
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_i7141"]
+gradient = SubResource("Gradient_qfnet")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Curve" id="Curve_4mrxx"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.242424, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_7r4gi"]
+curve = SubResource("Curve_4mrxx")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_w7kh3"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_e3hyu"]
+noise = SubResource("FastNoiseLite_w7kh3")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_q5onr"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jhx03"]
+noise = SubResource("FastNoiseLite_q5onr")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o8fc1"]
+shader = ExtResource("1_4wyf3")
+shader_parameter/cloud_shape_sampler = SubResource("NoiseTexture2D_jhx03")
+shader_parameter/cloud_noise_sampler = SubResource("NoiseTexture2D_e3hyu")
+shader_parameter/cloud_curves = SubResource("CurveTexture_7r4gi")
+shader_parameter/clouds_samples = 16
+shader_parameter/shadow_sample = 4
+shader_parameter/clouds_density = 0.5
+shader_parameter/clouds_scale = 1.0
+shader_parameter/clouds_smoothness = 0.035
+shader_parameter/clouds_light_color = Color(0, 0, 0, 1)
+shader_parameter/clouds_shadow_intensity = 1.0
+shader_parameter/high_clouds_density = 0.0
+shader_parameter/top_color = Color(0.41, 0.488667, 1, 1)
+shader_parameter/bottom_color = Color(0, 0.0570001, 0.57, 1)
+shader_parameter/sun_scatter = Color(1, 1, 1, 1)
+shader_parameter/astro_tint = Color(0, 0, 0, 1)
+shader_parameter/astro_sampler = SubResource("GradientTexture2D_i7141")
+shader_parameter/astro_scale = 1.0
+shader_parameter/astro_intensity = 1.0
+shader_parameter/stars_intensity = 0.0
+shader_parameter/shooting_stars_intensity = 0.0
+shader_parameter/shooting_star_tint = Color(0, 0, 0, 1)
+
+[sub_resource type="Sky" id="Sky_xo05s"]
+sky_material = SubResource("ShaderMaterial_o8fc1")
+
+[sub_resource type="Environment" id="Environment_dss4m"]
+background_mode = 2
+sky = SubResource("Sky_xo05s")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lakw3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4wyf3"]
+albedo_color = Color(0.2025, 0.45, 0, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_gv5m4"]
+material = SubResource("StandardMaterial3D_4wyf3")
+size = Vector2(100, 100)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_7t5mc"]
+points = PackedVector3Array(-50, 0, -50, -50, 0, 50, 50, 0, -50, 50, 0, 50)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_k0juu"]
+top_radius = 0.0
+radial_segments = 4
+
+[sub_resource type="BoxMesh" id="BoxMesh_4wyf3"]
+size = Vector3(0.3, 1, 0.3)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_4wyf3"]
+points = PackedVector3Array(-0.15, -0.5, -0.15, -0.15, -0.5, 0.15, -0.15, 0.5, -0.15, 0.15, -0.5, -0.15, 0.15, -0.5, 0.15, -0.15, 0.5, 0.15, 0.15, 0.5, -0.15, 0.15, 0.5, 0.15)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k0juu"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_71j4m"]
+material = SubResource("StandardMaterial3D_k0juu")
+top_radius = 0.14
+bottom_radius = 0.14
+height = 0.4
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4wyf3"]
+size = Vector3(0.3, 0.1, 0.3)
+
+[sub_resource type="Animation" id="Animation_4wyf3"]
+resource_name = "press"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Button:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.9, 0), Vector3(0, 0.815385, 0), Vector3(0, 0.9, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_k0juu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Button:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.9, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_71j4m"]
+_data = {
+&"RESET": SubResource("Animation_k0juu"),
+&"press": SubResource("Animation_4wyf3")
+}
+
+[node name="World" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_dss4m")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+script = ExtResource("2_k0juu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_lakw3")
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+script = ExtResource("3_71j4m")
+SENSITIVITY_X = 0.015
+SENSITIVITY_Y = 0.015
+
+[node name="RayCast3D" type="RayCast3D" parent="CharacterBody3D/Camera3D"]
+target_position = Vector3(0, 0, -4)
+
+[node name="MapGeometry" type="Node3D" parent="."]
+
+[node name="Ground" type="MeshInstance3D" parent="MapGeometry"]
+mesh = SubResource("PlaneMesh_gv5m4")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MapGeometry/Ground"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MapGeometry/Ground/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_7t5mc")
+
+[node name="AnchorCone1" type="MeshInstance3D" parent="MapGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.63923, 1, -2.65364)
+mesh = SubResource("CylinderMesh_k0juu")
+
+[node name="AnchorCone2" type="MeshInstance3D" parent="MapGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.213, 0.999996, 38.0504)
+mesh = SubResource("CylinderMesh_k0juu")
+
+[node name="Button" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.53461, 0, -2.5297)
+script = ExtResource("4_k0juu")
+
+[node name="Stand" type="MeshInstance3D" parent="Button"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_4wyf3")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Button/Stand"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Button/Stand/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_4wyf3")
+
+[node name="Button" type="MeshInstance3D" parent="Button"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CylinderMesh_71j4m")
+
+[node name="ClickBox" type="Area3D" parent="Button"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Button/ClickBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.148865, 0)
+shape = SubResource("BoxShape3D_4wyf3")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Button"]
+libraries = {
+&"": SubResource("AnimationLibrary_71j4m")
+}
