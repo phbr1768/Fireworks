@@ -1,8 +1,9 @@
-[gd_scene load_steps=29 format=3 uid="uid://c0ttefhg74235"]
+[gd_scene load_steps=34 format=3 uid="uid://c0ttefhg74235"]
 
 [ext_resource type="Shader" uid="uid://bulqso12hlwoy" path="res://shaders/stylized_sky.gdshader" id="1_4wyf3"]
 [ext_resource type="Script" uid="uid://lwp8n33ajedh" path="res://scripts/movement.gd" id="2_k0juu"]
 [ext_resource type="Script" uid="uid://vhbc0qwli5en" path="res://scripts/camera.gd" id="3_71j4m"]
+[ext_resource type="Script" uid="uid://bsdlr7y4qtc8h" path="res://scripts/click_cast.gd" id="4_71j4m"]
 [ext_resource type="Script" uid="uid://b15bcxnld5as6" path="res://scripts/button.gd" id="4_k0juu"]
 
 [sub_resource type="Gradient" id="Gradient_qfnet"]
@@ -14,7 +15,7 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="Curve" id="Curve_4mrxx"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.242424, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.371212, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.707865), 0.0, 0.0, 0, 0]
 point_count = 3
 
 [sub_resource type="CurveTexture" id="CurveTexture_7r4gi"]
@@ -37,20 +38,20 @@ shader_parameter/cloud_noise_sampler = SubResource("NoiseTexture2D_e3hyu")
 shader_parameter/cloud_curves = SubResource("CurveTexture_7r4gi")
 shader_parameter/clouds_samples = 16
 shader_parameter/shadow_sample = 4
-shader_parameter/clouds_density = 0.5
+shader_parameter/clouds_density = 0.0
 shader_parameter/clouds_scale = 1.0
 shader_parameter/clouds_smoothness = 0.035
 shader_parameter/clouds_light_color = Color(0, 0, 0, 1)
 shader_parameter/clouds_shadow_intensity = 1.0
 shader_parameter/high_clouds_density = 0.0
-shader_parameter/top_color = Color(0.41, 0.488667, 1, 1)
-shader_parameter/bottom_color = Color(0, 0.0570001, 0.57, 1)
-shader_parameter/sun_scatter = Color(1, 1, 1, 1)
+shader_parameter/top_color = Color(0, 0, 0, 1)
+shader_parameter/bottom_color = Color(0, 0.00800001, 0.08, 1)
+shader_parameter/sun_scatter = Color(0, 0, 0, 1)
 shader_parameter/astro_tint = Color(0, 0, 0, 1)
 shader_parameter/astro_sampler = SubResource("GradientTexture2D_i7141")
 shader_parameter/astro_scale = 1.0
 shader_parameter/astro_intensity = 1.0
-shader_parameter/stars_intensity = 0.0
+shader_parameter/stars_intensity = 5.0
 shader_parameter/shooting_stars_intensity = 0.0
 shader_parameter/shooting_star_tint = Color(0, 0, 0, 1)
 
@@ -62,8 +63,28 @@ background_mode = 2
 sky = SubResource("Sky_xo05s")
 tonemap_mode = 2
 glow_enabled = true
+glow_bloom = 0.4
+glow_blend_mode = 0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lakw3"]
+
+[sub_resource type="Gradient" id="Gradient_71j4m"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.11039)
+colors = PackedColorArray(0, 0.52549, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_qfnet"]
+gradient = SubResource("Gradient_71j4m")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_71j4m"]
+albedo_color = Color(0, 0.52549, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_qfnet"]
+material = SubResource("StandardMaterial3D_71j4m")
+radius = 0.05
+height = 0.1
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4wyf3"]
 albedo_color = Color(0.2025, 0.45, 0, 1)
@@ -82,8 +103,8 @@ radial_segments = 4
 [sub_resource type="BoxMesh" id="BoxMesh_4wyf3"]
 size = Vector3(0.3, 1, 0.3)
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_4wyf3"]
-points = PackedVector3Array(-0.15, -0.5, -0.15, -0.15, -0.5, 0.15, -0.15, 0.5, -0.15, 0.15, -0.5, -0.15, 0.15, -0.5, 0.15, -0.15, 0.5, 0.15, 0.15, 0.5, -0.15, 0.15, 0.5, 0.15)
+[sub_resource type="BoxShape3D" id="BoxShape3D_71j4m"]
+size = Vector3(0.3, 1, 0.3)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k0juu"]
 albedo_color = Color(1, 0, 0, 1)
@@ -96,6 +117,21 @@ height = 0.4
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4wyf3"]
 size = Vector3(0.3, 0.1, 0.3)
+
+[sub_resource type="Animation" id="Animation_qfnet"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Button:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.9, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_4wyf3"]
 resource_name = "press"
@@ -111,25 +147,24 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector3(0, 0.9, 0), Vector3(0, 0.815385, 0), Vector3(0, 0.9, 0)]
 }
-
-[sub_resource type="Animation" id="Animation_k0juu"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Button:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ClickBox")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0.9, 0)]
+"values": [{
+"args": [],
+"method": &"activate"
+}]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_71j4m"]
 _data = {
-&"RESET": SubResource("Animation_k0juu"),
+&"RESET": SubResource("Animation_qfnet"),
 &"press": SubResource("Animation_4wyf3")
 }
 
@@ -139,7 +174,8 @@ _data = {
 environment = SubResource("Environment_dss4m")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 3.73591, 0)
+light_color = Color(0.29, 0.29, 0.29, 1)
 shadow_enabled = true
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
@@ -157,6 +193,31 @@ SENSITIVITY_Y = 0.015
 
 [node name="RayCast3D" type="RayCast3D" parent="CharacterBody3D/Camera3D"]
 target_position = Vector3(0, 0, -4)
+collision_mask = 3
+collide_with_areas = true
+script = ExtResource("4_71j4m")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="CharacterBody3D"]
+visible = false
+
+[node name="TextureRect" type="TextureRect" parent="CharacterBody3D/CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_qfnet")
+
+[node name="SurfacePoint" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+mesh = SubResource("SphereMesh_qfnet")
+skeleton = NodePath("../CharacterBody3D")
 
 [node name="MapGeometry" type="Node3D" parent="."]
 
@@ -178,8 +239,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.213, 0.999996, 38.0504)
 mesh = SubResource("CylinderMesh_k0juu")
 
 [node name="Button" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.53461, 0, -2.5297)
-script = ExtResource("4_k0juu")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -2)
 
 [node name="Stand" type="MeshInstance3D" parent="Button"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
@@ -189,7 +249,7 @@ skeleton = NodePath("../..")
 [node name="StaticBody3D" type="StaticBody3D" parent="Button/Stand"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Button/Stand/StaticBody3D"]
-shape = SubResource("ConvexPolygonShape3D_4wyf3")
+shape = SubResource("BoxShape3D_71j4m")
 
 [node name="Button" type="MeshInstance3D" parent="Button"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -197,6 +257,10 @@ mesh = SubResource("CylinderMesh_71j4m")
 
 [node name="ClickBox" type="Area3D" parent="Button"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("4_k0juu")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Button/ClickBox"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.148865, 0)

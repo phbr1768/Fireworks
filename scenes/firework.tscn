@@ -1,0 +1,190 @@
+[gd_scene load_steps=27 format=3 uid="uid://dnf2otepvahba"]
+
+[ext_resource type="Script" uid="uid://bbuk2m67e076d" path="res://firework.gd" id="1_rhpnd"]
+[ext_resource type="Material" uid="uid://dsbwjvjigi08w" path="res://scenes/firework_material.tres" id="2_m1txt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qfnet"]
+albedo_color = Color(1, 0.72549, 0.415686, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_i7141"]
+material = SubResource("StandardMaterial3D_qfnet")
+top_radius = 0.01
+bottom_radius = 0.01
+height = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i7141"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_4mrxx"]
+material = SubResource("StandardMaterial3D_i7141")
+top_radius = 0.03
+bottom_radius = 0.03
+height = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7r4gi"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_w7kh3"]
+material = SubResource("StandardMaterial3D_7r4gi")
+top_radius = 0.0
+bottom_radius = 0.05
+height = 0.15
+
+[sub_resource type="Gradient" id="Gradient_rhpnd"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(1, 0.844, 0.48, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_m1txt"]
+gradient = SubResource("Gradient_rhpnd")
+fill_from = Vector2(1, 0)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iff28"]
+transparency = 1
+depth_draw_mode = 1
+albedo_texture = SubResource("GradientTexture2D_m1txt")
+metallic_specular = 0.0
+emission_enabled = true
+emission = Color(1, 0.843137, 0.478431, 1)
+emission_energy_multiplier = 2.0
+rim_enabled = true
+rim_tint = 0.0
+disable_receive_shadows = true
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fyjda"]
+particle_flag_align_y = true
+particle_flag_rotate_y = true
+angle_min = -720.0
+angle_max = 720.0
+direction = Vector3(0, -1, 0)
+spread = 89.0
+initial_velocity_max = 0.1
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="QuadMesh" id="QuadMesh_ufg75"]
+size = Vector2(0.1, 0.1)
+
+[sub_resource type="Gradient" id="Gradient_m1txt"]
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_iff28"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_fyjda"]
+width = 256
+height = 256
+color_ramp = SubResource("Gradient_m1txt")
+noise = SubResource("FastNoiseLite_iff28")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rhpnd"]
+transparency = 4
+depth_draw_mode = 1
+albedo_texture = SubResource("NoiseTexture2D_fyjda")
+metallic_specular = 0.0
+disable_receive_shadows = true
+billboard_mode = 1
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_m1txt"]
+direction = Vector3(0, -1, 0)
+spread = 180.0
+initial_velocity_max = 0.09
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="QuadMesh" id="QuadMesh_iff28"]
+size = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_iff28"]
+colors = PackedColorArray(1, 0, 0, 1, 1, 1, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fyjda"]
+gradient = SubResource("Gradient_iff28")
+
+[sub_resource type="Gradient" id="Gradient_ufg75"]
+offsets = PackedFloat32Array(0.792642, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_f5mwm"]
+gradient = SubResource("Gradient_ufg75")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cl4e6"]
+lifetime_randomness = 0.8
+direction = Vector3(0, 1, 0)
+spread = 180.0
+initial_velocity_min = 15.0
+initial_velocity_max = 20.0
+scale_min = 4.0
+scale_max = 6.0
+color_ramp = SubResource("GradientTexture1D_f5mwm")
+color_initial_ramp = SubResource("GradientTexture1D_fyjda")
+hue_variation_min = -2.23517e-08
+hue_variation_max = -2.23517e-08
+
+[sub_resource type="Curve" id="Curve_tmhqj"]
+_data = [Vector2(0, 0.484672), 0.0, 2.83333, 0, 0, Vector2(1, 0), -1.955, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_425i0"]
+material = ExtResource("2_m1txt")
+shape = 0
+size = 0.1
+curve = SubResource("Curve_tmhqj")
+
+[node name="Firework" type="RigidBody3D"]
+collision_layer = 0
+freeze = true
+script = ExtResource("1_rhpnd")
+
+[node name="Stick" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00872231, 0.116323, 0.00904226)
+mesh = SubResource("CylinderMesh_i7141")
+
+[node name="Shaft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.216323, 0)
+mesh = SubResource("CylinderMesh_4mrxx")
+
+[node name="Top" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.405555, 0)
+mesh = SubResource("CylinderMesh_w7kh3")
+
+[node name="FuseTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="ChargeTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="ExplosionTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="SparkParticles" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.065388, 0)
+material_override = SubResource("StandardMaterial3D_iff28")
+emitting = false
+amount = 100
+process_material = SubResource("ParticleProcessMaterial_fyjda")
+draw_pass_1 = SubResource("QuadMesh_ufg75")
+
+[node name="SmokeParticles" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.065, 0)
+material_override = SubResource("StandardMaterial3D_rhpnd")
+emitting = false
+amount = 200
+process_material = SubResource("ParticleProcessMaterial_m1txt")
+draw_pass_1 = SubResource("QuadMesh_iff28")
+
+[node name="ExplosionParticles" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.202, 0)
+emitting = false
+amount = 30
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+trail_enabled = true
+trail_lifetime = 0.6
+process_material = SubResource("ParticleProcessMaterial_cl4e6")
+draw_pass_1 = SubResource("RibbonTrailMesh_425i0")
+
+[connection signal="timeout" from="FuseTimer" to="." method="_on_fuse_timer_timeout"]
+[connection signal="timeout" from="ChargeTimer" to="." method="_on_charge_timer_timeout"]
+[connection signal="timeout" from="ExplosionTimer" to="." method="_on_explosion_timer_timeout"]
