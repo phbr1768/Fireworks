@@ -1,0 +1,16 @@
+My thought process in making this was "I just want to make cool fireworks." I look up how to make a firework effect then figured out how to use trail particles from it and made a bunch more after the one.
+
+The word I used was burst and the first thought that came to my mind was Fireworks because they are for celebration and it's the end of the semester.
+
+There werent any inspirations for the fireworks other than ones I've seen in real life. I did look up the names for different patterns though. https://www.skybaconfireworks.com/post/12-types-of-fireworks-effects
+
+Grade: 85%
+
+Controls for the piece:
+Mouse to look around
+W forwards
+A left
+S backward
+D right
+E or left click to place down firework or interact with button
+R to reset your own position

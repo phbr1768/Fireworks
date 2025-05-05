@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://c0ttefhg74235"]
+[gd_scene load_steps=40 format=3 uid="uid://c0ttefhg74235"]
 
 [ext_resource type="Shader" uid="uid://bulqso12hlwoy" path="res://shaders/stylized_sky.gdshader" id="1_4wyf3"]
 [ext_resource type="Script" uid="uid://lwp8n33ajedh" path="res://scripts/movement.gd" id="2_k0juu"]
@@ -85,6 +85,39 @@ albedo_color = Color(0, 0.52549, 1, 1)
 material = SubResource("StandardMaterial3D_71j4m")
 radius = 0.05
 height = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qfnet"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.54, 0.39384, 0.2268, 0.0745098)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_i7141"]
+material = SubResource("StandardMaterial3D_qfnet")
+top_radius = 0.01
+bottom_radius = 0.01
+height = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4mrxx"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 1, 1, 0.0588235)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_7r4gi"]
+material = SubResource("StandardMaterial3D_4mrxx")
+top_radius = 0.03
+bottom_radius = 0.03
+height = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w7kh3"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 0.278431)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_e3hyu"]
+material = SubResource("StandardMaterial3D_w7kh3")
+top_radius = 0.0
+bottom_radius = 0.05
+height = 0.15
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4wyf3"]
 albedo_color = Color(0.2025, 0.45, 0, 1)
@@ -188,8 +221,8 @@ shape = SubResource("CapsuleShape3D_lakw3")
 [node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 script = ExtResource("3_71j4m")
-SENSITIVITY_X = 0.015
-SENSITIVITY_Y = 0.015
+SENSITIVITY_X = 0.007
+SENSITIVITY_Y = 0.007
 
 [node name="RayCast3D" type="RayCast3D" parent="CharacterBody3D/Camera3D"]
 target_position = Vector3(0, 0, -4)
@@ -214,10 +247,31 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_qfnet")
 
-[node name="SurfacePoint" type="MeshInstance3D" parent="."]
+[node name="SurfacePoint" type="Node3D" parent="."]
 unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.88448, 0, -1.21046)
+
+[node name="Dot" type="MeshInstance3D" parent="SurfacePoint"]
+visible = false
 mesh = SubResource("SphereMesh_qfnet")
-skeleton = NodePath("../CharacterBody3D")
+skeleton = NodePath("../../CharacterBody3D")
+
+[node name="FireworkModel" type="Node3D" parent="SurfacePoint"]
+
+[node name="Stick" type="MeshInstance3D" parent="SurfacePoint/FireworkModel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00872231, 0.116323, 0.00904226)
+mesh = SubResource("CylinderMesh_i7141")
+skeleton = NodePath("../..")
+
+[node name="Shaft" type="MeshInstance3D" parent="SurfacePoint/FireworkModel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.216323, 0)
+mesh = SubResource("CylinderMesh_7r4gi")
+skeleton = NodePath("../..")
+
+[node name="Top" type="MeshInstance3D" parent="SurfacePoint/FireworkModel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.405555, 0)
+mesh = SubResource("CylinderMesh_e3hyu")
+skeleton = NodePath("../..")
 
 [node name="MapGeometry" type="Node3D" parent="."]
 
